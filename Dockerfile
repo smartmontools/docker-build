@@ -68,3 +68,14 @@ RUN cd /tmp && wget https://github.com/planetbeing/libdmg-hfsplus/archive/master
     && mkdir libdmg-hfsplus-master/build && cd libdmg-hfsplus-master/build \
     && cmake ../ && make && make install \
     && cd / && rm -rf /tmp/libdmg-hfsplus-master /tmp/master.zip
+
+# Get FreeBSD libs/headers, extract and fix broken links
+RUN cd /tmp && wget http://ftp.plusline.de/FreeBSD/releases/amd64/10.4-RELEASE/base.txz \
+    && mkdir -p /opt/cross-freebsd-10 \
+    && cd /opt/cross-freebsd-10 \
+    && tar -xf /tmp/base.txz ./lib/ ./usr/lib/ ./usr/include/ \
+    && cd /opt/cross-freebsd-10/usr/lib \
+    && find . -xtype l|xargs ls -l|grep ' /lib/' \
+        | awk '{print "ln -sf /opt/cross-freebsd-10"$11 " " $9}' \
+        | /bin/sh && \
+    rm -f /tmp/base.txz
