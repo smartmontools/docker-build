@@ -16,4 +16,4 @@ Docker container based on Ubtuntu LTS, with all dependencies to generate smartmo
 ## Related links
 
 - Smartmontools [Circle CI Build recipes](https://www.smartmontools.org/browser/trunk/.circleci/config.yml)
-- Docker HUB [Automated Build](Automated Build)
+- Docker HUB [Automated Build](https://hub.docker.com/r/sammcz/docker-build/)
