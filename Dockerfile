@@ -6,7 +6,7 @@ RUN apt-get update -qy && \
     apt-get install -y automake g\+\+ make jq curl subversion pkg-config \
     g++-mingw-w64-x86-64 g++-mingw-w64-i686 dos2unix nsis man2html-base groff \
     clang cpio libxml2-dev libssl1.0-dev libbz2-dev unzip wget genisoimage cmake \
-    man g++-multilib libc6-dev-i386
+    man g++-multilib libc6-dev-i386 clang-tools
 
 # Installing OSX cross-tools to make Darwin builds
 
@@ -79,3 +79,13 @@ RUN cd /tmp && wget http://ftp.plusline.de/FreeBSD/releases/amd64/10.4-RELEASE/b
         | awk '{print "ln -sf /opt/cross-freebsd-10"$11 " " $9}' \
         | /bin/sh && \
     rm -f /tmp/base.txz
+# Install cppcheck
+RUN v=1.85 \
+    && cd /tmp \
+    && wget -O cppcheck-$v.tar.gz https://github.com/danmar/cppcheck/archive/$v.tar.gz \
+    && tar -xf cppcheck-$v.tar.gz \
+    && cd cppcheck-$v \
+    && make="make PREFIX=/usr/local CFGDIR=/usr/local/share/cppcheck/cfg" \
+    && $make && $make install \
+    && cd / && rm -rf /tmp/cppcheck-$v.tar.gz /tmp/cppcheck-$v
+ 
