@@ -69,7 +69,7 @@ RUN cd /tmp && wget https://github.com/planetbeing/libdmg-hfsplus/archive/master
     && cmake ../ && make && make install \
     && cd / && rm -rf /tmp/libdmg-hfsplus-master /tmp/master.zip
 
-# Get FreeBSD libs/headers, extract and fix broken links
+# Get FreeBSD 11 libs/headers, extract and fix broken links
 RUN cd /tmp && wget http://ftp.plusline.de/FreeBSD/releases/amd64/11.2-RELEASE/base.txz \
     && mkdir -p /opt/cross-freebsd-11 \
     && cd /opt/cross-freebsd-11 \
@@ -79,6 +79,18 @@ RUN cd /tmp && wget http://ftp.plusline.de/FreeBSD/releases/amd64/11.2-RELEASE/b
         | awk '{print "ln -sf /opt/cross-freebsd-11"$11 " " $9}' \
         | /bin/sh && \
     rm -f /tmp/base.txz
+
+# Get FreeBSD 12 libs/headers, extract and fix broken links
+RUN cd /tmp && wget http://ftp.plusline.de/FreeBSD/releases/amd64/12.0-RELEASE/base.txz \
+    && mkdir -p /opt/cross-freebsd-12 \
+    && cd /opt/cross-freebsd-12 \
+    && tar -xf /tmp/base.txz ./lib/ ./usr/lib/ ./usr/include/ \
+    && cd /opt/cross-freebsd-12/usr/lib \
+    && find . -xtype l|xargs ls -l|grep ' /lib/' \
+        | awk '{print "ln -sf /opt/cross-freebsd-12"$11 " " $9}' \
+        | /bin/sh && \
+    rm -f /tmp/base.txz
+
 # Install cppcheck
 RUN v=1.85 \
     && cd /tmp \
@@ -88,4 +100,3 @@ RUN v=1.85 \
     && make="make PREFIX=/usr/local CFGDIR=/usr/local/share/cppcheck/cfg" \
     && $make && $make install \
     && cd / && rm -rf /tmp/cppcheck-$v.tar.gz /tmp/cppcheck-$v
- 
