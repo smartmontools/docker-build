@@ -70,7 +70,7 @@ RUN cd /tmp && wget https://github.com/planetbeing/libdmg-hfsplus/archive/master
     && cd / && rm -rf /tmp/libdmg-hfsplus-master /tmp/master.zip
 
 # Get FreeBSD 11 libs/headers, extract and fix broken links
-RUN cd /tmp && wget http://ftp.plusline.de/FreeBSD/releases/amd64/11.2-RELEASE/base.txz \
+RUN cd /tmp && wget http://ftp.plusline.de/FreeBSD/releases/amd64/11.3-RELEASE/base.txz \
     && mkdir -p /opt/cross-freebsd-11 \
     && cd /opt/cross-freebsd-11 \
     && tar -xf /tmp/base.txz ./lib/ ./usr/lib/ ./usr/include/ \
