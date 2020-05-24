@@ -81,7 +81,7 @@ RUN cd /tmp && wget http://ftp.plusline.de/FreeBSD/releases/amd64/11.3-RELEASE/b
     rm -f /tmp/base.txz
 
 # Get FreeBSD 12 libs/headers, extract and fix broken links
-RUN cd /tmp && wget http://ftp.plusline.de/FreeBSD/releases/amd64/12.0-RELEASE/base.txz \
+RUN cd /tmp && wget http://ftp.plusline.de/FreeBSD/releases/amd64/12.1-RELEASE/base.txz \
     && mkdir -p /opt/cross-freebsd-12 \
     && cd /opt/cross-freebsd-12 \
     && tar -xf /tmp/base.txz ./lib/ ./usr/lib/ ./usr/include/ \
