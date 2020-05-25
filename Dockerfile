@@ -1,6 +1,7 @@
 # UBUNTU LTS 18.04, as 20.04 removed openssl1.0 package
 FROM ubuntu:18.04
 
+ENV DEBIAN_FRONTEND=noninteractive
 # Install dependencies for the smartmontools Linux and WIN32 builds
 RUN apt-get update -qy && \
     apt-get install -y automake g\+\+ make jq curl subversion pkg-config \
