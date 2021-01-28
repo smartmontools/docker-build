@@ -98,6 +98,6 @@ RUN v=2.3 \
     && wget -O cppcheck-$v.tar.gz https://github.com/danmar/cppcheck/archive/$v.tar.gz \
     && tar -xf cppcheck-$v.tar.gz \
     && cd cppcheck-$v \
-    && make="make PREFIX=/usr/local CFGDIR=/usr/local/share/cppcheck/cfg" \
+    && make="make FILESDIR=/usr/local/share/cppcheck PREFIX=/usr/local CFGDIR=/usr/local/share/cppcheck/cfg" \
     && $make && $make install \
     && cd / && rm -rf /tmp/cppcheck-$v.tar.gz /tmp/cppcheck-$v
