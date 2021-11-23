@@ -93,7 +93,7 @@ RUN cd /tmp && wget http://ftp.plusline.de/FreeBSD/releases/amd64/13.0-RELEASE/b
     rm -f /tmp/base.txz
 
 # Install cppcheck
-RUN v=2.3 \
+RUN v=2.6 \
     && cd /tmp \
     && wget -O cppcheck-$v.tar.gz https://github.com/danmar/cppcheck/archive/$v.tar.gz \
     && tar -xf cppcheck-$v.tar.gz \

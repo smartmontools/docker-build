@@ -11,9 +11,9 @@ Docker container based on Ubtuntu LTS, with all dependencies to generate smartmo
 - Linux: x86_64, i686 using GCC
 - Darwin x86_64, i386 using clang/[osxcross](https://github.com/tpoechtrager/osxcross)
 - Windows: 64 and 32 bits
-- FreeBSD 11.x, FreeBSD 12.x (clang crossbuild)
+- FreeBSD 12.x, FreeBSD 13.x (clang crossbuild)
 
 ## Related links
 
 - Smartmontools [Circle CI Build recipes](https://www.smartmontools.org/browser/trunk/.circleci/config.yml)
-- Docker HUB [Automated Build](https://hub.docker.com/r/sammcz/docker-build/)
+- Github [package details](https://github.com/smartmontools/docker-build/pkgs/container/docker-build)
