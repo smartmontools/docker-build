@@ -70,25 +70,25 @@ RUN cd /tmp && wget https://github.com/planetbeing/libdmg-hfsplus/archive/master
     && cmake ../ && make && make install \
     && cd / && rm -rf /tmp/libdmg-hfsplus-master /tmp/master.zip
 
-# Get FreeBSD 11 libs/headers, extract and fix broken links
-RUN cd /tmp && wget http://ftp.plusline.de/FreeBSD/releases/amd64/11.4-RELEASE/base.txz \
-    && mkdir -p /opt/cross-freebsd-11 \
-    && cd /opt/cross-freebsd-11 \
-    && tar -xf /tmp/base.txz ./lib/ ./usr/lib/ ./usr/include/ \
-    && cd /opt/cross-freebsd-11/usr/lib \
-    && find . -xtype l|xargs ls -l|grep ' /lib/' \
-        | awk '{print "ln -sf /opt/cross-freebsd-11"$11 " " $9}' \
-        | /bin/sh && \
-    rm -f /tmp/base.txz
-
 # Get FreeBSD 12 libs/headers, extract and fix broken links
-RUN cd /tmp && wget http://ftp.plusline.de/FreeBSD/releases/amd64/12.1-RELEASE/base.txz \
+RUN cd /tmp && wget http://ftp.plusline.de/FreeBSD/releases/amd64/12.2-RELEASE/base.txz \
     && mkdir -p /opt/cross-freebsd-12 \
     && cd /opt/cross-freebsd-12 \
     && tar -xf /tmp/base.txz ./lib/ ./usr/lib/ ./usr/include/ \
     && cd /opt/cross-freebsd-12/usr/lib \
     && find . -xtype l|xargs ls -l|grep ' /lib/' \
         | awk '{print "ln -sf /opt/cross-freebsd-12"$11 " " $9}' \
+        | /bin/sh && \
+    rm -f /tmp/base.txz
+
+# Get FreeBSD 13 libs/headers, extract and fix broken links
+RUN cd /tmp && wget http://ftp.plusline.de/FreeBSD/releases/amd64/13.0-RELEASE/base.txz \
+    && mkdir -p /opt/cross-freebsd-13 \
+    && cd /opt/cross-freebsd-13 \
+    && tar -xf /tmp/base.txz ./lib/ ./usr/lib/ ./usr/include/ \
+    && cd /opt/cross-freebsd-13/usr/lib \
+    && find . -xtype l|xargs ls -l|grep ' /lib/' \
+        | awk '{print "ln -sf /opt/cross-freebsd-13"$11 " " $9}' \
         | /bin/sh && \
     rm -f /tmp/base.txz
 
