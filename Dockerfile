@@ -71,7 +71,7 @@ RUN cd /tmp && wget https://github.com/planetbeing/libdmg-hfsplus/archive/master
     && cd / && rm -rf /tmp/libdmg-hfsplus-master /tmp/master.zip
 
 # Get FreeBSD 12 libs/headers, extract and fix broken links
-RUN cd /tmp && wget http://ftp.plusline.de/FreeBSD/releases/amd64/12.2-RELEASE/base.txz \
+RUN cd /tmp && wget http://ftp.plusline.de/FreeBSD/releases/amd64/12.4-RELEASE/base.txz \
     && mkdir -p /opt/cross-freebsd-12 \
     && cd /opt/cross-freebsd-12 \
     && tar -xf /tmp/base.txz ./lib/ ./usr/lib/ ./usr/include/ \
@@ -82,7 +82,7 @@ RUN cd /tmp && wget http://ftp.plusline.de/FreeBSD/releases/amd64/12.2-RELEASE/b
     rm -f /tmp/base.txz
 
 # Get FreeBSD 13 libs/headers, extract and fix broken links
-RUN cd /tmp && wget http://ftp.plusline.de/FreeBSD/releases/amd64/13.0-RELEASE/base.txz \
+RUN cd /tmp && wget http://ftp.plusline.de/FreeBSD/releases/amd64/13.1-RELEASE/base.txz \
     && mkdir -p /opt/cross-freebsd-13 \
     && cd /opt/cross-freebsd-13 \
     && tar -xf /tmp/base.txz ./lib/ ./usr/lib/ ./usr/include/ \
@@ -93,7 +93,7 @@ RUN cd /tmp && wget http://ftp.plusline.de/FreeBSD/releases/amd64/13.0-RELEASE/b
     rm -f /tmp/base.txz
 
 # Install cppcheck
-RUN v=2.7 \
+RUN v=2.10 \
     && cd /tmp \
     && wget -O cppcheck-$v.tar.gz https://github.com/danmar/cppcheck/archive/$v.tar.gz \
     && tar -xf cppcheck-$v.tar.gz \
