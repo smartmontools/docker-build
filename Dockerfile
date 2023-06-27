@@ -7,17 +7,19 @@ RUN apt-get update -qy && \
     apt-get install -y automake g\+\+ make jq curl subversion pkg-config \
     g++-mingw-w64-x86-64 g++-mingw-w64-i686 dos2unix nsis man2html-base groff \
     clang cpio libxml2-dev libssl1.0-dev libbz2-dev unzip wget genisoimage cmake \
-    man g++-multilib libc6-dev-i386 clang-tools
+    man g++-multilib libc6-dev-i386 clang-tools git
 
 # Installing OSX cross-tools to make Darwin builds
 
 #Build arguments
 ARG osxcross_repo="tpoechtrager/osxcross"
-ARG osxcross_revision="a845375e028d29b447439b0c65dea4a9b4d2b2f6"
-ARG darwin_sdk_version="10.10"
+ARG osxcross_revision="564e2b9aa8e7a40da663d890c0e853a1259ff8b1"
+ARG darwin_sdk_version="11.3"
 ARG darwin_osx_version_min="10.6"
+
 ARG darwin_version="14"
-ARG darwin_sdk_url="https://www.dropbox.com/s/yfbesd249w10lpc/MacOSX${darwin_sdk_version}.sdk.tar.xz"
+# ARG darwin_sdk_url="https://www.dropbox.com/s/yfbesd249w10lpc/MacOSX${darwin_sdk_version}.sdk.tar.xz"
+ARG darwin_sdk_url="https://github.com/phracker/MacOSX-SDKs/releases/download/11.3/MacOSX${darwin_sdk_version}.sdk.tar.xz"
 
 # ENV available in docker image
 ENV OSXCROSS_REPO="${osxcross_repo}"                   \
@@ -32,7 +34,7 @@ RUN mkdir -p "/tmp/osxcross"                                                    
  && curl -sLo osxcross.tar.gz "https://codeload.github.com/${OSXCROSS_REPO}/tar.gz/${OSXCROSS_REVISION}"  \
  && tar --strip=1 -xzf osxcross.tar.gz                                                                         \
  && rm -f osxcross.tar.gz                                                                                      \
- && curl -sLo tarballs/MacOSX${DARWIN_SDK_VERSION}.sdk.tar.xz                                                  \
+ && curl  -sLo tarballs/MacOSX${DARWIN_SDK_VERSION}.sdk.tar.xz                                                 \
              "${DARWIN_SDK_URL}"                \
  && yes "" | SDK_VERSION="${DARWIN_SDK_VERSION}" OSX_VERSION_MIN="${DARWIN_OSX_VERSION_MIN}" ./build.sh                               \
  && mv target /usr/osxcross                                                                                    \
@@ -82,7 +84,7 @@ RUN cd /tmp && wget http://ftp.plusline.de/FreeBSD/releases/amd64/12.4-RELEASE/b
     rm -f /tmp/base.txz
 
 # Get FreeBSD 13 libs/headers, extract and fix broken links
-RUN cd /tmp && wget http://ftp.plusline.de/FreeBSD/releases/amd64/13.1-RELEASE/base.txz \
+RUN cd /tmp && wget http://ftp.plusline.de/FreeBSD/releases/amd64/13.2-RELEASE/base.txz \
     && mkdir -p /opt/cross-freebsd-13 \
     && cd /opt/cross-freebsd-13 \
     && tar -xf /tmp/base.txz ./lib/ ./usr/lib/ ./usr/include/ \
