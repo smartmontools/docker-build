@@ -45,16 +45,6 @@ RUN mkdir -p "/tmp/osxcross"                                                    
  && rm -rf /tmp/osxcross                                                                                       \
  && rm -rf "/usr/osxcross/SDK/MacOSX${DARWIN_SDK_VERSION}.sdk/usr/share/man"
 
-# Installing xar to make Darwin packages
-ARG xar_version="1.6.1"
-ENV XAR_VERSION="${xar_version}"
-RUN cd /tmp \
-    && wget https://github.com/mackyle/xar/archive/xar-${XAR_VERSION}.tar.gz \
-    && tar -xvzf xar-${XAR_VERSION}.tar.gz \
-    && cd xar-xar-${XAR_VERSION}/xar \
-    && ./autogen.sh && ./configure && make && make install \
-    && cd / && rm -rf /tmp/xar-xar-${XAR_VERSION} /tmp/xar-${XAR_VERSION}.tar.gz
-
 # Installing bomutils to make Darwin packages
 ARG bomutils_version="0.2"
 ENV BOMUTILS_VERSION="${bomutils_version}"
