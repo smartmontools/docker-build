@@ -95,7 +95,7 @@ RUN cd /tmp && wget http://ftp.plusline.de/FreeBSD/releases/amd64/13.2-RELEASE/b
     rm -f /tmp/base.txz
 
 # Install cppcheck
-RUN v=2.10 \
+RUN v=2.11 \
     && cd /tmp \
     && wget -O cppcheck-$v.tar.gz https://github.com/danmar/cppcheck/archive/$v.tar.gz \
     && tar -xf cppcheck-$v.tar.gz \
@@ -103,3 +103,4 @@ RUN v=2.10 \
     && make="make FILESDIR=/usr/local/share/cppcheck PREFIX=/usr/local CFGDIR=/usr/local/share/cppcheck/cfg" \
     && $make && $make install \
     && cd / && rm -rf /tmp/cppcheck-$v.tar.gz /tmp/cppcheck-$v
+
