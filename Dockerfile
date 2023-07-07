@@ -1,13 +1,12 @@
-# UBUNTU LTS 18.04, as 20.04 removed openssl1.0 package
-FROM ubuntu:18.04
+FROM debian:12
 
 ENV DEBIAN_FRONTEND=noninteractive
 # Install dependencies for the smartmontools Linux and WIN32 builds
 RUN apt-get update -qy && \
     apt-get install -y automake g\+\+ make jq curl subversion pkg-config \
     g++-mingw-w64-x86-64 g++-mingw-w64-i686 dos2unix nsis man2html-base groff \
-    clang cpio libxml2-dev libssl1.0-dev libbz2-dev unzip wget genisoimage cmake \
-    man g++-multilib libc6-dev-i386 clang-tools git clang-10
+    clang cpio libxml2-dev libssl-dev libbz2-dev unzip wget genisoimage cmake \
+    man g++-multilib libc6-dev-i386 clang-tools git xz-utils zlib1g-dev
 
 # Installing OSX cross-tools to make Darwin builds
 
@@ -46,20 +45,21 @@ RUN mkdir -p "/tmp/osxcross"                                                    
  && rm -rf "/usr/osxcross/SDK/MacOSX${DARWIN_SDK_VERSION}.sdk/usr/share/man"
 
 # Installing bomutils to make Darwin packages
+# CXXFLAGS='-std=gnu++11' fixes "reference is ambiguous" error in lsbom.cpp
 ARG bomutils_version="0.2"
 ENV BOMUTILS_VERSION="${bomutils_version}"
 RUN cd /tmp && wget https://github.com/hogliux/bomutils/archive/${bomutils_version}.tar.gz \
     && tar -xvzf ${bomutils_version}.tar.gz \
     && cd bomutils-${bomutils_version}/ \
-    && make && make install \
+    && make CXXFLAGS='-std=gnu++11 -Wall' && make install \
     && cd / && rm -rf /tmp/${bomutils_version}.tar.gz /tmp/bomutils-${bomutils_version}
 
 # Installing libdmg-hfsplus to build Darwin dmg images
+# 'C_DEFINES=' removes libssl1.0 dependency
 RUN cd /tmp && wget https://github.com/planetbeing/libdmg-hfsplus/archive/master.zip \
-    && wget https://github.com/planetbeing/libdmg-hfsplus/archive/master.zip \
     && unzip master.zip \
     && mkdir libdmg-hfsplus-master/build && cd libdmg-hfsplus-master/build \
-    && cmake ../ && make && make install \
+    && cmake ../ && make C_DEFINES= && make install \
     && cd / && rm -rf /tmp/libdmg-hfsplus-master /tmp/master.zip
 
 # Get FreeBSD 12 libs/headers, extract and fix broken links
@@ -70,8 +70,10 @@ RUN cd /tmp && wget http://ftp.plusline.de/FreeBSD/releases/amd64/12.4-RELEASE/b
     && cd /opt/cross-freebsd-12/usr/lib \
     && find . -xtype l|xargs ls -l|grep ' /lib/' \
         | awk '{print "ln -sf /opt/cross-freebsd-12"$11 " " $9}' \
-        | /bin/sh && \
-    rm -f /tmp/base.txz
+        | /bin/sh \
+    && ln -s libc++.a /opt/cross-freebsd-12/usr/lib/libstdc++.a \
+    && ln -s libc++.so /opt/cross-freebsd-12/usr/lib/libstdc++.so \
+    && rm -f /tmp/base.txz
 
 # Get FreeBSD 13 libs/headers, extract and fix broken links
 RUN cd /tmp && wget http://ftp.plusline.de/FreeBSD/releases/amd64/13.2-RELEASE/base.txz \
@@ -81,8 +83,10 @@ RUN cd /tmp && wget http://ftp.plusline.de/FreeBSD/releases/amd64/13.2-RELEASE/b
     && cd /opt/cross-freebsd-13/usr/lib \
     && find . -xtype l|xargs ls -l|grep ' /lib/' \
         | awk '{print "ln -sf /opt/cross-freebsd-13"$11 " " $9}' \
-        | /bin/sh && \
-    rm -f /tmp/base.txz
+        | /bin/sh \
+    && ln -s libc++.a /opt/cross-freebsd-13/usr/lib/libstdc++.a \
+    && ln -s libc++.so /opt/cross-freebsd-13/usr/lib/libstdc++.so \
+    && rm -f /tmp/base.txz
 
 # Install cppcheck
 RUN v=2.11 \
