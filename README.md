@@ -11,7 +11,7 @@ Docker container based on Ubtuntu LTS, with all dependencies to generate smartmo
 - Linux: x86_64, i686 using GCC
 - Darwin x86_64, i386 using clang/[osxcross](https://github.com/tpoechtrager/osxcross)
 - Windows: 64 and 32 bits
-- FreeBSD 12.x, FreeBSD 13.x (clang crossbuild)
+- FreeBSD 13.x, FreeBSD 14.x (clang crossbuild)
 
 ## Related links
 
