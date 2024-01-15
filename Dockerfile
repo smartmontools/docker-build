@@ -4,9 +4,20 @@ ENV DEBIAN_FRONTEND=noninteractive
 # Install dependencies for the smartmontools Linux and WIN32 builds
 RUN apt-get update -qy && \
     apt-get install -y automake g\+\+ make jq curl subversion pkg-config \
-    g++-mingw-w64-x86-64 g++-mingw-w64-i686 dos2unix nsis man2html-base groff \
+    g++-mingw-w64-x86-64 g++-mingw-w64-i686 dos2unix man2html-base groff \
     clang cpio libxml2-dev libssl-dev libbz2-dev unzip wget xorriso cmake \
     man g++-multilib libc6-dev-i386 clang-tools git xz-utils zlib1g-dev
+
+# NSIS 3.08-3 from Debian 12 generates bogus relocation information (regression).
+# The fixed version 3.09-1 is still only available from Debian 13 (trixie, testing).
+# Manually install this version.  The warning about outdated libstdc++6 could be
+# safely ignored.
+RUN v="3.09-1" \
+    && cd /tmp \
+    && wget http://http.us.debian.org/debian/pool/main/n/nsis/nsis-common_${v}_all.deb \
+    && wget http://http.us.debian.org/debian/pool/main/n/nsis/nsis_${v}_amd64.deb \
+    && dpkg --install --force-all nsis-common_${v}_all.deb nsis_${v}_amd64.deb \
+    && rm -f nsis-common_${v}_all.deb nsis_${v}_amd64.deb
 
 # Installing OSX cross-tools to make Darwin builds
 
