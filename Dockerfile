@@ -101,12 +101,12 @@ RUN cd /tmp && wget http://ftp.plusline.de/FreeBSD/releases/amd64/14.0-RELEASE/b
     && rm -f /tmp/base.txz
 
 # Install cppcheck
-RUN v=2.13.0 \
+RUN v=2.13.1 \
     && cd /tmp \
     && wget -O cppcheck-$v.tar.gz https://github.com/danmar/cppcheck/archive/$v.tar.gz \
     && tar -xf cppcheck-$v.tar.gz \
     && cd cppcheck-$v \
-    && make="make FILESDIR=/usr/local/share/cppcheck PREFIX=/usr/local CFGDIR=/usr/local/share/cppcheck/cfg" \
+    && make="make MATCHCOMPILER=yes FILESDIR=/usr/local/share/cppcheck PREFIX=/usr/local" \
     && $make && $make install \
     && cd / && rm -rf /tmp/cppcheck-$v.tar.gz /tmp/cppcheck-$v
 
