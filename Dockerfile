@@ -9,10 +9,10 @@ RUN apt-get update -qy && \
     man g++-multilib libc6-dev-i386 clang-tools git xz-utils zlib1g-dev
 
 # NSIS 3.08-3 from Debian 12 generates bogus relocation information (regression).
-# The fixed version 3.09-1 is still only available from Debian 13 (trixie, testing).
+# The fixed version 3.10-2 is still only available from Debian 13 (trixie, testing).
 # Manually install this version.  The warning about outdated libstdc++6 could be
 # safely ignored.
-RUN v="3.09-1" \
+RUN v="3.10-2" \
     && cd /tmp \
     && wget http://http.us.debian.org/debian/pool/main/n/nsis/nsis-common_${v}_all.deb \
     && wget http://http.us.debian.org/debian/pool/main/n/nsis/nsis_${v}_amd64.deb \
