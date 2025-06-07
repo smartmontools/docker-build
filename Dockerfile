@@ -6,18 +6,17 @@ RUN apt-get update -qy && \
     apt-get install -y automake g\+\+ make jq curl subversion pkg-config \
     g++-mingw-w64-x86-64 g++-mingw-w64-i686 dos2unix man2html-base groff \
     clang cpio libxml2-dev libssl-dev libbz2-dev unzip wget xorriso cmake \
-    man g++-multilib libc6-dev-i386 clang-tools git xz-utils zlib1g-dev
+    man g++-multilib libc6-dev-i386 clang-tools git xz-utils zlib1g-dev \
+    scons binutils-mingw-w64-i686 zlib1g-dev libcppunit-dev
 
 # NSIS 3.08-3 from Debian 12 generates bogus relocation information (regression).
-# The fixed version 3.11-1 is still only available from Debian 13 (trixie, testing).
-# Manually install this version.  The warning about outdated libstdc++6 could be
-# safely ignored.
-RUN v="3.11-1" \
-    && cd /tmp \
-    && wget http://http.us.debian.org/debian/pool/main/n/nsis/nsis-common_${v}_all.deb \
-    && wget http://http.us.debian.org/debian/pool/main/n/nsis/nsis_${v}_amd64.deb \
-    && dpkg --install --force-all nsis-common_${v}_all.deb nsis_${v}_amd64.deb \
-    && rm -f nsis-common_${v}_all.deb nsis_${v}_amd64.deb
+RUN mkdir /tmp/nsis && cd /tmp/nsis && \
+    wget 'https://downloads.sourceforge.net/project/libpng/zlib/1.2.8/zlib128-dll.zip' && \
+    unzip -d zlib zlib128-dll.zip && \
+    wget 'https://prdownloads.sourceforge.net/nsis/nsis-3.10-src.tar.bz2' && \
+    tar -xf nsis-3.10-src.tar.bz2 && \
+    cd nsis-3.10-src && scons -j `nproc` ZLIB_W32=$HOME/zlib SKIPUTILS="NSIS Menu" NSIS_CONFIG_LOG=yes build install && \
+    cd $HOME && rm -rf /tmp/nsis
 
 # Installing OSX cross-tools to make Darwin builds
 
