@@ -7,7 +7,7 @@ RUN apt-get update -qy && \
     g++-mingw-w64-x86-64 g++-mingw-w64-i686 dos2unix man2html-base groff \
     clang cpio libxml2-dev libssl-dev libbz2-dev unzip wget xorriso cmake \
     man g++-multilib libc6-dev-i386 clang-tools git xz-utils zlib1g-dev \
-    scons binutils-mingw-w64-i686 zlib1g-dev libcppunit-dev
+    scons binutils-mingw-w64-i686 zlib1g-dev libcppunit-dev bzip2
 
 # NSIS 3.08-3 from Debian 12 generates bogus relocation information (regression).
 RUN mkdir /tmp/nsis && cd /tmp/nsis && \
