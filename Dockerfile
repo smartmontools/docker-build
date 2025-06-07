@@ -15,7 +15,7 @@ RUN mkdir /tmp/nsis && cd /tmp/nsis && \
     unzip -d zlib zlib128-dll.zip && \
     wget 'https://prdownloads.sourceforge.net/nsis/nsis-3.10-src.tar.bz2' && \
     tar -xf nsis-3.10-src.tar.bz2 && \
-    cd nsis-3.10-src && scons -j `nproc` ZLIB_W32=$HOME/zlib SKIPUTILS="NSIS Menu" NSIS_CONFIG_LOG=yes build install && \
+    cd nsis-3.10-src && scons -j `nproc` ZLIB_W32=/tmp/nsis/zlib SKIPUTILS="NSIS Menu" NSIS_CONFIG_LOG=yes build install && \
     cd $HOME && rm -rf /tmp/nsis
 
 # Installing OSX cross-tools to make Darwin builds
