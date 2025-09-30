@@ -3,7 +3,7 @@ FROM debian:12
 ENV DEBIAN_FRONTEND=noninteractive
 # Install dependencies for the smartmontools Linux and WIN32 builds
 RUN apt-get update -qy && \
-    apt-get install -y automake g\+\+ make jq curl subversion pkg-config \
+    apt-get install -y automake g\+\+ make jq curl libtool pkg-config \
     g++-mingw-w64-x86-64 g++-mingw-w64-i686 dos2unix man2html-base groff \
     clang cpio libxml2-dev libssl-dev libbz2-dev unzip wget xorriso cmake \
     man g++-multilib libc6-dev-i386 clang-tools git xz-utils zlib1g-dev \
@@ -22,7 +22,7 @@ RUN mkdir /tmp/nsis && cd /tmp/nsis && \
 
 #Build arguments
 ARG osxcross_repo="tpoechtrager/osxcross"
-ARG osxcross_revision="564e2b9aa8e7a40da663d890c0e853a1259ff8b1"
+ARG osxcross_revision="f873f534c6cdb0776e457af8c7513da1e02abe59"
 ARG darwin_sdk_version="11.3"
 ARG darwin_osx_version_min="10.6"
 
