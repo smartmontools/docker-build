@@ -1,4 +1,4 @@
-FROM debian:12
+FROM debian:13
 
 ENV DEBIAN_FRONTEND=noninteractive
 # Install dependencies for the smartmontools Linux and WIN32 builds
@@ -7,16 +7,7 @@ RUN apt-get update -qy && \
     g++-mingw-w64-x86-64 g++-mingw-w64-i686 dos2unix man2html-base groff \
     clang cpio libxml2-dev libssl-dev libbz2-dev unzip wget xorriso cmake \
     man g++-multilib libc6-dev-i386 clang-tools git xz-utils zlib1g-dev \
-    scons binutils-mingw-w64-i686 zlib1g-dev libcppunit-dev bzip2
-
-# NSIS 3.08-3 from Debian 12 generates bogus relocation information (regression).
-RUN mkdir /tmp/nsis && cd /tmp/nsis && \
-    wget 'https://downloads.sourceforge.net/project/libpng/zlib/1.2.8/zlib128-dll.zip' && \
-    unzip -d zlib zlib128-dll.zip && \
-    wget 'https://prdownloads.sourceforge.net/nsis/nsis-3.10-src.tar.bz2' && \
-    tar -xf nsis-3.10-src.tar.bz2 && \
-    cd nsis-3.10-src && scons -j `nproc` ZLIB_W32=/tmp/nsis/zlib SKIPUTILS="NSIS Menu" NSIS_CONFIG_LOG=yes build install && \
-    cd $HOME && rm -rf /tmp/nsis
+    scons binutils-mingw-w64-i686 libcppunit-dev bzip2 nsis
 
 # Installing OSX cross-tools to make Darwin builds
 
@@ -100,7 +91,7 @@ RUN cd /tmp && wget http://ftp.plusline.de/FreeBSD/releases/amd64/14.2-RELEASE/b
     && rm -f /tmp/base.txz
 
 # Install cppcheck
-RUN v=2.17.1 \
+RUN v=2.18.0 \
     && cd /tmp \
     && wget -O cppcheck-$v.tar.gz https://github.com/danmar/cppcheck/archive/$v.tar.gz \
     && tar -xf cppcheck-$v.tar.gz \
@@ -108,4 +99,3 @@ RUN v=2.17.1 \
     && make="make MATCHCOMPILER=yes FILESDIR=/usr/local/share/cppcheck PREFIX=/usr/local" \
     && $make && $make install \
     && cd / && rm -rf /tmp/cppcheck-$v.tar.gz /tmp/cppcheck-$v
-
