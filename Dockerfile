@@ -64,21 +64,8 @@ RUN cd /tmp && wget https://github.com/planetbeing/libdmg-hfsplus/archive/master
     && cd / && rm -rf /tmp/libdmg-hfsplus-master /tmp/master.zip
 
 
-# Get FreeBSD 13 libs/headers, extract and fix broken links
-RUN cd /tmp && wget http://ftp.plusline.de/FreeBSD/releases/amd64/13.5-RELEASE/base.txz \
-    && mkdir -p /opt/cross-freebsd-13 \
-    && cd /opt/cross-freebsd-13 \
-    && tar -xf /tmp/base.txz ./lib/ ./usr/lib/ ./usr/include/ \
-    && cd /opt/cross-freebsd-13/usr/lib \
-    && find . -xtype l|xargs ls -l|grep ' /lib/' \
-        | awk '{print "ln -sf /opt/cross-freebsd-13"$11 " " $9}' \
-        | /bin/sh \
-    && ln -s libc++.a /opt/cross-freebsd-13/usr/lib/libstdc++.a \
-    && ln -s libc++.so /opt/cross-freebsd-13/usr/lib/libstdc++.so \
-    && rm -f /tmp/base.txz
-
 # Get FreeBSD 14 libs/headers, extract and fix broken links
-RUN cd /tmp && wget http://ftp.plusline.de/FreeBSD/releases/amd64/14.2-RELEASE/base.txz \
+RUN cd /tmp && wget http://ftp.plusline.de/FreeBSD/releases/amd64/14.3-RELEASE/base.txz \
     && mkdir -p /opt/cross-freebsd-14 \
     && cd /opt/cross-freebsd-14 \
     && tar -xf /tmp/base.txz ./lib/ ./usr/lib/ ./usr/include/ \
@@ -90,12 +77,16 @@ RUN cd /tmp && wget http://ftp.plusline.de/FreeBSD/releases/amd64/14.2-RELEASE/b
     && ln -s libc++.so /opt/cross-freebsd-14/usr/lib/libstdc++.so \
     && rm -f /tmp/base.txz
 
-# Install cppcheck
-RUN v=2.18.0 \
-    && cd /tmp \
-    && wget -O cppcheck-$v.tar.gz https://github.com/danmar/cppcheck/archive/$v.tar.gz \
-    && tar -xf cppcheck-$v.tar.gz \
-    && cd cppcheck-$v \
-    && make="make MATCHCOMPILER=yes FILESDIR=/usr/local/share/cppcheck PREFIX=/usr/local" \
-    && $make && $make install \
-    && cd / && rm -rf /tmp/cppcheck-$v.tar.gz /tmp/cppcheck-$v
+# Get FreeBSD 15 libs/headers, extract and fix broken links
+RUN cd /tmp && wget http://ftp.plusline.de/FreeBSD/releases/amd64/15.0-RELEASE/base.txz \
+    && mkdir -p /opt/cross-freebsd-15 \
+    && cd /opt/cross-freebsd-15 \
+    && tar -xf /tmp/base.txz ./lib/ ./usr/lib/ ./usr/include/ \
+    && cd /opt/cross-freebsd-15/usr/lib \
+    && find . -xtype l|xargs ls -l|grep ' /lib/' \
+        | awk '{print "ln -sf /opt/cross-freebsd-15"$11 " " $9}' \
+        | /bin/sh \
+    && ln -s libc++.a /opt/cross-freebsd-15/usr/lib/libstdc++.a \
+    && ln -s libc++.so /opt/cross-freebsd-15/usr/lib/libstdc++.so \
+    && rm -f /tmp/base.txz
+
