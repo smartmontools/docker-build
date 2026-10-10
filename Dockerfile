@@ -65,7 +65,7 @@ RUN cd /tmp && wget https://github.com/planetbeing/libdmg-hfsplus/archive/master
 
 
 # Get FreeBSD 14 libs/headers, extract and fix broken links
-RUN cd /tmp && wget http://ftp.plusline.de/FreeBSD/releases/amd64/14.3-RELEASE/base.txz \
+RUN cd /tmp && wget http://ftp.plusline.de/FreeBSD/releases/amd64/14.5-RELEASE/base.txz \
     && mkdir -p /opt/cross-freebsd-14 \
     && cd /opt/cross-freebsd-14 \
     && tar -xf /tmp/base.txz ./lib/ ./usr/lib/ ./usr/include/ \
@@ -78,7 +78,7 @@ RUN cd /tmp && wget http://ftp.plusline.de/FreeBSD/releases/amd64/14.3-RELEASE/b
     && rm -f /tmp/base.txz
 
 # Get FreeBSD 15 libs/headers, extract and fix broken links
-RUN cd /tmp && wget http://ftp.plusline.de/FreeBSD/releases/amd64/15.0-RELEASE/base.txz \
+RUN cd /tmp && wget http://ftp.plusline.de/FreeBSD/releases/amd64/15.1-RELEASE/base.txz \
     && mkdir -p /opt/cross-freebsd-15 \
     && cd /opt/cross-freebsd-15 \
     && tar -xf /tmp/base.txz ./lib/ ./usr/lib/ ./usr/include/ \
